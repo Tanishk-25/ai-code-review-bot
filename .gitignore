@@ -1,0 +1,10 @@
+# Environment variables — contains real secrets, must never be committed
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# OS
+.DS_Store
