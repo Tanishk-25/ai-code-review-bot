@@ -21,4 +21,4 @@ jobs:
           python-version: '3.11'
 
       - name: Confirm trigger works
-        run: echo "AI Code Review Bot triggered for PR #${{ github.event.pull_request.number }}"
+        run: 'echo "AI Code Review Bot triggered for PR #${{ github.event.pull_request.number }}"'
