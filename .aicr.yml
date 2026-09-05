@@ -1,0 +1,20 @@
+# AI Code Review Bot configuration
+
+# Model used for review
+model: gemini-3.8-flash
+
+# Minimum severity that counts as a "real" problem for meets_threshold()
+# One of: CRITICAL, WARNING, SUGGESTION
+severity_threshold: SUGGESTION
+
+# Files to skip entirely (glob patterns)
+excluded_paths:
+  - "*.lock"
+  - "package-lock.json"
+  - "venv/*"
+  - "node_modules/*"
+
+# Files with more changed lines than this are skipped, not reviewed —
+# this IS the "large PR handling" requirement: no chunking infrastructure,
+# just a limit and a clear note in the summary.
+max_diff_lines: 300
