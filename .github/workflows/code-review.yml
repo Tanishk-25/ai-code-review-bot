@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  review:
+  review-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,5 +20,39 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Confirm trigger works
-        run: 'echo "AI Code Review Bot triggered for PR #${{ github.event.pull_request.number }}"'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest -v
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-code-review-bot:latest
+
+      - name: Deploy and run review on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/ai-code-review-bot:latest
+            docker stop ai-code-review-bot || true
+            docker rm ai-code-review-bot || true
+            docker run --rm --name ai-code-review-bot \
+              -e GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}" \
+              -e GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}" \
+              -e GITHUB_REPOSITORY="${{ github.repository }}" \
+              -e PR_NUMBER="${{ github.event.pull_request.number }}" \
+              ${{ secrets.DOCKERHUB_USERNAME }}/ai-code-review-bot:latest
