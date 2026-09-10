@@ -121,12 +121,17 @@ python -m app.main      # run the bot against the PR set in .env
 
 ## Screenshots
 
-_(Add these after capturing them — see the checklist below)_
+**Pull request with the AI Code Review Summary comment**
+![PR review comment](screenshots/pr-review-comment.png)
 
-- Pull request with the AI Code Review Summary comment
-- GitHub Actions workflow run, all steps green
-- Docker Hub repository with pushed image
-- EC2 instance running the container
+**GitHub Actions workflow run, all steps green**
+![Actions pipeline success](screenshots/actions-pipeline-success.png)
+
+**Docker Hub repository with pushed image**
+![Docker Hub image](screenshots/dockerhub-image.png)
+
+**EC2 instance running the container**
+![EC2 instance](screenshots/ec2-instance.png)
 
 ## Limitations & Future Improvements
 
