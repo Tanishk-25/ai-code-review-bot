@@ -1,137 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="login css" >
-    <title>Document</title>
-</head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Code Review Bot for CI/CD Pipelines</title>
 <style>
-    body{
-       background-image: url("coffee.png") ;
-       background-repeat: no-repeat;
-       background-size: cover;
-       
-        margin: 0;
-        padding: 0;
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        background-size: cover;
-       
-        
-    }
-    .mainn{
-        margin: 5% auto 0 auto;
-        width: 40%;
-        height: fit-content;
-        background-color: rgba(179, 160, 143, 0.377);
-        align-items: center;
-        padding: 80px;
-        border-radius: 9%;
-    }
-    form{
-        align-items: center;
-    }
-    p{
-        font-weight: bold;
-        text-align: center;
-        font-size: 45px;
-        margin-bottom: 20px;
-    }
-    label{
-        margin-left: 39.2%;
-        font-size: 25px;
-        text-align: center;
-    }
-    #name, #pass{
-        margin-left: 5%;
-    }
-    br{
-        margin-top: 20px;
-        
-    }
-    #line{
-        margin: 45px 600px 45px auto;
-        width: 400px;
-        
-    }
-    #linee{
-        margin: 45px 20px 45px auto;
-    }
-    .h{
-        margin-left: 45%;
-    }
-    button{
-        font-size: 25px;
-    }
-    span:hover{
-        box-shadow: 5xp 5px 5px whitesmoke;
-    }
-    .n{
-        margin-left: 24%;
-    }
-    button{
-        margin: 40px auto 0 auto;
-        padding: 20px;
-        font-size: 15px;
-        border-radius: 9%;
-        background-color: rgba(83, 74, 63, 0.178);
-        color: black;
-        width: 120px;
-        border: 1px solid white;
+  :root {
+    --bg: #0d1117;
+    --bg-alt: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --accent: #58a6ff;
+    --accent-2: #3fb950;
+    --card: #161b22;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
 
-    }
-    p{
-        color: white;
-        text-transform: uppercase;
-    }
-    label{
-        color: white;
-    }
-    button{
-        color: whitesmoke;
-    }
-    a{
-        text-decoration: none;
-        color: white;
-    }
-    .main p {
-        margin-bottom: 12%;
-    }
-    div img{
-        z-index: 100;
-        background-size: cover;      
-    }
-    .mainn{
-        z-index: 0;
-    }
+  header.hero {
+    padding: 72px 0 48px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: radial-gradient(ellipse at top, rgba(88,166,255,0.08), transparent 60%);
+  }
+  header.hero h1 {
+    font-size: 2.1rem;
+    margin: 0 0 12px;
+    letter-spacing: -0.5px;
+  }
+  header.hero p.tagline {
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    max-width: 620px;
+    margin: 0 auto 28px;
+  }
+  .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 28px; }
+  .badges img { height: 22px; }
+  .cta-row { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    border: 1px solid var(--border);
+  }
+  .btn-primary { background: var(--accent); color: #0d1117; border-color: var(--accent); }
+  .btn-primary:hover { background: #79b8ff; text-decoration: none; }
+  .btn-ghost { color: var(--text); }
+  .btn-ghost:hover { background: var(--bg-alt); text-decoration: none; }
+
+  section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  h2 {
+    font-size: 1.5rem;
+    margin: 0 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2::before {
+    content: "";
+    width: 4px;
+    height: 22px;
+    background: var(--accent);
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  @media (max-width: 720px) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 1.02rem; }
+  .card p { margin: 0; color: var(--text-dim); font-size: 0.92rem; }
+  .card .icon { font-size: 1.4rem; margin-bottom: 10px; display: block; }
+
+  .stack-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+
+  .pipeline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .pipe-step {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.85rem;
+    text-align: center;
+    flex: 1 1 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+  }
+  .pipe-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-size: 1.1rem;
+    flex: 0 0 auto;
+    padding: 0 8px;
+  }
+  @media (max-width: 720px) {
+    .pipeline { flex-direction: column; }
+    .pipe-arrow { transform: rotate(90deg); padding: 4px 0; }
+  }
+
+  .shot {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .shot img { width: 100%; display: block; border-bottom: 1px solid var(--border); }
+  .shot figcaption { padding: 12px 14px; font-size: 0.88rem; color: var(--text-dim); margin: 0; }
+
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; text-align: center; }
+  @media (max-width: 720px) { .metrics { grid-template-columns: 1fr; } }
+  .metric-num { font-size: 1.8rem; font-weight: 700; color: var(--accent-2); }
+  .metric-label { color: var(--text-dim); font-size: 0.85rem; margin-top: 4px; }
+
+  ul.limits { padding-left: 20px; color: var(--text-dim); font-size: 0.92rem; }
+  ul.limits li { margin-bottom: 6px; }
+
+  footer {
+    padding: 40px 0 60px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
 </style>
+</head>
 <body>
-    <div><img src="" alt=""></div>
-    <div class="mainn">
-        <div class="main">
-            <p class="m">Login</p>
-        </div>
-    <form >
-        <label id="bb" for="line">Enter Your Name </label><br>
-        <div class="n"><input id="line" type="text" name="line" ><br></div><br>
-        <label id="bb" for="line">&nbsp;Enter Password </label><br>
-        <div class="n"><input name="line" id="line" type="password" ><br></div>
-        
-        
-    </form>
-    <div id="butto"><p><button type="button" onclick="b()">Login </button></div></p>
-</div>
-    
-<script>
-    function b(){
-        var line = document.getElementById('line').value;
-        if (line===''){
-            alert("Fill Field Correctly");
-        }
-        else{
-            window.location.href = 'home.html';
-        }
-    }
-</script>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>🤖 AI Code Review Bot for CI/CD Pipelines</h1>
+    <p class="tagline">
+      An AI-powered pull request reviewer that runs as a real containerized service —
+      deployed via a full CI/CD pipeline to AWS EC2, not just a script inside a CI runner.
+    </p>
+    <div class="badges">
+      <img src="https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white" alt="Python 3.11" />
+      <img src="https://img.shields.io/badge/Google-Gemini%20API-4285F4?logo=google&logoColor=white" alt="Gemini API" />
+      <img src="https://img.shields.io/badge/GitHub-Actions-2088FF?logo=githubactions&logoColor=white" alt="GitHub Actions" />
+      <img src="https://img.shields.io/badge/Docker-Container-2496ED?logo=docker&logoColor=white" alt="Docker" />
+      <img src="https://img.shields.io/badge/AWS-EC2-FF9900?logo=amazonaws&logoColor=white" alt="AWS EC2" />
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/Tanishk-25/ai-code-review-bot">View on GitHub</a>
+      <a class="btn btn-ghost" href="#screenshots">See it in action</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>What It Does</h2>
+    <p style="color: var(--text-dim); max-width: 720px;">
+      When a pull request is opened or updated, a GitHub Actions workflow automatically runs the test suite,
+      builds a Docker image, pushes it to Docker Hub, and deploys it to a live AWS EC2 instance. Inside that
+      running container, the bot fetches the PR's diff via the GitHub REST API, sends it to Google's Gemini API
+      for review, validates the AI's response against a strict schema, and posts a single, severity-classified
+      summary comment back on the pull request — automatically, on every push.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Features</h2>
+    <div class="grid-3">
+      <div class="card">
+        <span class="icon">🔍</span>
+        <h3>Automated AI Review</h3>
+        <p>Every PR diff is analyzed by Gemini and returned as severity-classified findings for security issues, bugs, and code quality.</p>
+      </div>
+      <div class="card">
+        <span class="icon">✅</span>
+        <h3>Schema-Validated Output</h3>
+        <p>AI responses are validated against Pydantic models before posting, so malformed or unexpected output never reaches the PR.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🚀</span>
+        <h3>Real CI/CD Deployment</h3>
+        <p>Tests → Docker build → Docker Hub → SSH deploy to EC2, fully automated, end-to-end in under 2 minutes.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🔐</span>
+        <h3>Least-Privilege Secrets</h3>
+        <p>All credentials live in GitHub Actions Secrets with scoped workflow permissions — nothing is hardcoded or logged.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🛡️</span>
+        <h3>Prompt-Injection Resistant</h3>
+        <p>System instructions are structurally isolated from untrusted PR diff content passed to the model.</p>
+      </div>
+      <div class="card">
+        <span class="icon">⚙️</span>
+        <h3>Configurable Behavior</h3>
+        <p>A repo-level config file controls severity thresholds, excluded paths, and max diff size — no code changes needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Tech Stack</h2>
+    <div class="stack-row">
+      <span class="pill">Python 3.11</span>
+      <span class="pill">Google Gemini API</span>
+      <span class="pill">PyGithub</span>
+      <span class="pill">Pydantic</span>
+      <span class="pill">pytest</span>
+      <span class="pill">GitHub Actions</span>
+      <span class="pill">Docker</span>
+      <span class="pill">Docker Hub</span>
+      <span class="pill">AWS EC2</span>
+      <span class="pill">SSH Deploy</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>How It Works</h2>
+    <div class="pipeline">
+      <div class="pipe-step">Pull Request<br/>Opened / Updated</div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">GitHub Actions<br/>Workflow Triggers</div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">Run pytest Suite</div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">Build &amp; Push<br/>Docker Image</div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">SSH Deploy<br/>to AWS EC2</div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">Bot Fetches PR Diff<br/>via GitHub REST API</div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">Gemini API<br/>Reviews Diff</div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">Validated Findings<br/>Posted as PR Comment</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Impact</h2>
+    <div class="metrics">
+      <div>
+        <div class="metric-num">&lt; 2 min</div>
+        <div class="metric-label">full pipeline: test → build → deploy</div>
+      </div>
+      <div>
+        <div class="metric-num">100%</div>
+        <div class="metric-label">PRs auto-reviewed on open &amp; every push</div>
+      </div>
+      <div>
+        <div class="metric-num">0</div>
+        <div class="metric-label">hardcoded secrets in source</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="screenshots">
+  <div class="wrap">
+    <h2>Screenshots</h2>
+    <div class="grid-2">
+      <figure class="shot">
+        <img src="screenshots/pr-review-comment.png" alt="AI review comment on a pull request" />
+        <figcaption>AI-generated review summary posted directly on a pull request</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="screenshots/actions-pipeline-success.png" alt="GitHub Actions pipeline run succeeding" />
+        <figcaption>GitHub Actions pipeline — test, build, and deploy succeeding end-to-end</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="screenshots/dockerhub-image.png" alt="Docker image pushed to Docker Hub" />
+        <figcaption>Docker image published to Docker Hub on every merge</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="screenshots/ec2-instance.png" alt="AWS EC2 instance running the bot" />
+        <figcaption>The bot running live on an AWS EC2 instance</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Limitations</h2>
+    <ul class="limits">
+      <li>Re-reviews the entire diff on every push rather than only newly changed lines since the last review.</li>
+      <li>Runs on a single EC2 instance with no auto-scaling or high availability.</li>
+      <li>No persistent history of past reviews — each run is stateless.</li>
+      <li>Supports one AI provider (Gemini) — switching models currently means a code change.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Built by Tanishk Agarwal —
+    <a href="https://github.com/Tanishk-25/ai-code-review-bot">Source on GitHub</a>
+    ·
+    <a href="https://github.com/Tanishk-25">@Tanishk-25</a>
+  </div>
+</footer>
+
 </body>
 </html>
