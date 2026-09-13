@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login css" >
+    <title>Document</title>
+</head>
+<style>
+    body{
+       background-image: url("coffee.png") ;
+       background-repeat: no-repeat;
+       background-size: cover;
+       
+        margin: 0;
+        padding: 0;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        background-size: cover;
+       
+        
+    }
+    .mainn{
+        margin: 5% auto 0 auto;
+        width: 40%;
+        height: fit-content;
+        background-color: rgba(179, 160, 143, 0.377);
+        align-items: center;
+        padding: 80px;
+        border-radius: 9%;
+    }
+    form{
+        align-items: center;
+    }
+    p{
+        font-weight: bold;
+        text-align: center;
+        font-size: 45px;
+        margin-bottom: 20px;
+    }
+    label{
+        margin-left: 39.2%;
+        font-size: 25px;
+        text-align: center;
+    }
+    #name, #pass{
+        margin-left: 5%;
+    }
+    br{
+        margin-top: 20px;
+        
+    }
+    #line{
+        margin: 45px 600px 45px auto;
+        width: 400px;
+        
+    }
+    #linee{
+        margin: 45px 20px 45px auto;
+    }
+    .h{
+        margin-left: 45%;
+    }
+    button{
+        font-size: 25px;
+    }
+    span:hover{
+        box-shadow: 5xp 5px 5px whitesmoke;
+    }
+    .n{
+        margin-left: 24%;
+    }
+    button{
+        margin: 40px auto 0 auto;
+        padding: 20px;
+        font-size: 15px;
+        border-radius: 9%;
+        background-color: rgba(83, 74, 63, 0.178);
+        color: black;
+        width: 120px;
+        border: 1px solid white;
+
+    }
+    p{
+        color: white;
+        text-transform: uppercase;
+    }
+    label{
+        color: white;
+    }
+    button{
+        color: whitesmoke;
+    }
+    a{
+        text-decoration: none;
+        color: white;
+    }
+    .main p {
+        margin-bottom: 12%;
+    }
+    div img{
+        z-index: 100;
+        background-size: cover;      
+    }
+    .mainn{
+        z-index: 0;
+    }
+</style>
+<body>
+    <div><img src="" alt=""></div>
+    <div class="mainn">
+        <div class="main">
+            <p class="m">Login</p>
+        </div>
+    <form >
+        <label id="bb" for="line">Enter Your Name </label><br>
+        <div class="n"><input id="line" type="text" name="line" ><br></div><br>
+        <label id="bb" for="line">&nbsp;Enter Password </label><br>
+        <div class="n"><input name="line" id="line" type="password" ><br></div>
+        
+        
+    </form>
+    <div id="butto"><p><button type="button" onclick="b()">Login </button></div></p>
+</div>
+    
+<script>
+    function b(){
+        var line = document.getElementById('line').value;
+        if (line===''){
+            alert("Fill Field Correctly");
+        }
+        else{
+            window.location.href = 'home.html';
+        }
+    }
+</script>
+</body>
+</html>
